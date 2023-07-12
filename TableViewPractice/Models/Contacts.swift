@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Contacts {
+struct Contacts: Hashable {
     var contactName: String
     
     init(contactName: String) {
