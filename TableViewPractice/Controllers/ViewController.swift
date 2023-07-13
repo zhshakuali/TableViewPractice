@@ -5,11 +5,28 @@
 //  Created by Жансая Шакуали on 11.07.2023.
 //
 
+//add addingFunction
+//add remove func
+//add sections
 import UIKit
+
+struct GroupedSection<SectionItem : Hashable, RowItem> {
+
+    var sectionItem : SectionItem
+    var rows : [RowItem]
+
+    static func group(rows : [RowItem], by criteria : (RowItem) -> SectionItem) -> [GroupedSection<SectionItem, RowItem>] {
+        let groups = Dictionary(grouping: rows, by: criteria)
+        return groups.map(GroupedSection.init(sectionItem:rows:))
+    }
+
+}
 
 class ViewController: UIViewController {
     
     enum Section { case main }
+    
+    var sections = [GroupedSection<Contacts, Contacts>]()
     
     var tableView: UITableView!
     var contacts: [Contacts] = []
@@ -23,18 +40,17 @@ class ViewController: UIViewController {
         title = "Contacts"
         configureTableView()
         contacts = fetchData()
-        configureSearchController()
         configureDataSource()
         configureAddButton()
+        configureSearchController()
+        sections = GroupedSection.group(rows: self.contacts, by: { _ in Contacts(contactName) })
     }
     func configureTableView() {
         tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.isEditing = true
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 50
-        tableView.allowsSelection = false
         tableView.register(ContactCell.self, forCellReuseIdentifier: ContactCell.reuseID)
         
         view.addSubview(tableView)
@@ -50,44 +66,6 @@ class ViewController: UIViewController {
     func configureAddButton() {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addContactButton))
         navigationItem.rightBarButtonItem = addButton
-    }
-    
-    @objc func addContactButton() {
-        showAlertVC()
-    }
-    
-    //add addingFunction
-    //add remove func
-    //add sections
-    func addingContacts() {
-        
-    }
-    
-    func configureSearchController() {
-        let searchController = UISearchController()
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search"
-        navigationItem.searchController = searchController
-    }
-    
-    //add update func
-    
-    func configureDataSource() {
-        dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { (tableView, indexPath, contact) -> UITableViewCell in
-            let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseID, for: indexPath) as! ContactCell
-            cell.set(contacts: contact)
-            return cell
-        })
-    }
-    
-    
-    func updateData(on contacts: [Contacts]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Contacts>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(contacts)
-        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
     
     func showAlertVC() {
@@ -124,16 +102,52 @@ class ViewController: UIViewController {
             self.contacts.append(contact)
             self.updateData(on: self.contacts)
         }))
-    
         alertVC.modalPresentationStyle = .automatic
         self.present(alertVC, animated: true)
-        
     }
+    
+    @objc func addContactButton() {
+        showAlertVC()
+    }
+    
+    
+    func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+    }
+    
+    
+    func configureDataSource() {
+        dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { (tableView, indexPath, contact) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.reuseID, for: indexPath) as! ContactCell
+            cell.set(contacts: contact)
+            return cell
+        })
+    }
+    
+    
+    func updateData(on contacts: [Contacts]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Contacts>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(contacts)
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+    }
+    
+    let dict = ["A": ["Adam", "Amelia"]]
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+        sections[section].rows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -144,13 +158,30 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-        }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let section = self.sections[section]
+        let letter = section.sectionItem
+        
+        return letter
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+            
+            let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, complete in
+                self.contacts.remove(at: indexPath.row)
+                self.updateData(on: self.contacts)
+                
+                complete(true)
+            }
+            let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+                   configuration.performsFirstActionWithFullSwipe = true
+                   return configuration
+    }
+    
 }
+
+
 
 extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {

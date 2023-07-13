@@ -13,6 +13,4 @@ extension UIViewController {
         let contact2 = Contacts(contactName: "Nodir")
         return [contact1, contact2]
     }
-    
-
 }

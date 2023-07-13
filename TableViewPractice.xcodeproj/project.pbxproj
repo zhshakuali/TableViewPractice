@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9F75AE512A5ECCF4005D4CC2 /* GFAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F75AE502A5ECCF4005D4CC2 /* GFAlertViewController.swift */; };
 		9FA7572A2A5D62E400932208 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA757292A5D62E400932208 /* AppDelegate.swift */; };
 		9FA7572C2A5D62E400932208 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA7572B2A5D62E400932208 /* SceneDelegate.swift */; };
 		9FA7572E2A5D62E400932208 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA7572D2A5D62E400932208 /* ViewController.swift */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9F75AE502A5ECCF4005D4CC2 /* GFAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFAlertViewController.swift; sourceTree = "<group>"; };
 		9FA757262A5D62E400932208 /* TableViewPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TableViewPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA757292A5D62E400932208 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9FA7572B2A5D62E400932208 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -46,7 +44,6 @@
 		9F75AE522A5ECD05005D4CC2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				9F75AE502A5ECCF4005D4CC2 /* GFAlertViewController.swift */,
 				9FA7572D2A5D62E400932208 /* ViewController.swift */,
 			);
 			path = Controllers;
@@ -181,7 +178,6 @@
 				9FA7573E2A5D732400932208 /* ContactCell.swift in Sources */,
 				9FA7572E2A5D62E400932208 /* ViewController.swift in Sources */,
 				9FA757452A5D915400932208 /* Extentions.swift in Sources */,
-				9F75AE512A5ECCF4005D4CC2 /* GFAlertViewController.swift in Sources */,
 				9FA7572A2A5D62E400932208 /* AppDelegate.swift in Sources */,
 				9FA7572C2A5D62E400932208 /* SceneDelegate.swift in Sources */,
 				9FA757402A5D779A00932208 /* Contacts.swift in Sources */,
