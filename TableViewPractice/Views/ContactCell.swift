@@ -30,18 +30,22 @@ class ContactCell: UITableViewCell {
     }
     
     func configure() {
+        
+        let topBottomOffset: CGFloat = 10
+        let sideOffset: CGFloat = 20
+        
         contentView.addSubview(contactNameLabel)
         
         NSLayoutConstraint.activate([
-            contactNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            contactNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            contactNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            contactNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+            contactNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: topBottomOffset),
+            contactNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -topBottomOffset),
+            contactNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: sideOffset),
+            contactNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -sideOffset)
         ])
     }
     
-    func set(contacts: Contacts) {
-        contactNameLabel.text = contacts.contactName
+    func set(contacts: Contact) {
+        contactNameLabel.text = contacts.name
     }
     
 }

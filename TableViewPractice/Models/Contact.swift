@@ -7,10 +7,10 @@
 
 import UIKit
 
-struct Contacts: Hashable {
-    var contactName: String
+struct Contact: Hashable {
+    let name: String
     
-    init(contactName: String) {
-        self.contactName = contactName
+    init(name: String) {
+        self.name = name
     }
 }
