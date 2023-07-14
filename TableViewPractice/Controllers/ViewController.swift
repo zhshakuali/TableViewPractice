@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Contacts"
         configureTableView()
-        contacts = fetchData()
+        setLayout()
         configureDataSource()
         configureAddButton()
         configureSearchController()
@@ -30,7 +30,9 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = 50
         tableView.register(ContactCell.self, forCellReuseIdentifier: ContactCell.reuseID)
-        
+    }
+    
+    func setLayout() {
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -150,7 +152,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return 
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else {
+            updateData(on: contacts)
+            return
         }
         filteredContacts = contacts.filter{ $0.name.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredContacts)
